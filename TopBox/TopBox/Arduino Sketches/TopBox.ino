@@ -1,4 +1,4 @@
-#define VERSION "TopBox V1.210320 by keithrickard@hotmail.com"
+#define VERSION "TopBox V1.210307 by keithrickard@hotmail.com"
 #include <SoftwareSerial.h>
 #include <EEPROM.h>
 
@@ -40,7 +40,7 @@
 #define R_MYFOCUSER   5   // Relay 5
 #define R_DEW_SCOPE   6   // Relay 6
 #define R_DEW_GUIDER  7   // Relay 7
-#define PIN           2   // Relay reference offset
+#define PIN           2
 #define btTXD         11
 #define btRXD         12
 #define LED           A2
@@ -75,11 +75,12 @@ void setup() {
   pinMode(R_MYFOCUSER + PIN,  INPUT);   // 5 myFocuserPro2 +12V stepper motor power source
   pinMode(R_DEW_SCOPE + PIN,  INPUT);   // 6 Dew heater power relay for the telescope
   pinMode(R_DEW_GUIDER + PIN, INPUT);   // 7 Dew heater power relay for the guidescope
-  pinMode(LED, OUTPUT);
+  pinMode(ASCOM, OUTPUT);
   pinMode(SWITCH_IN, INPUT_PULLUP);     // Button to stop focuser
   pinMode(SWITCH_OUT, INPUT_PULLUP);
   pinMode(SWITCH_GND, OUTPUT);
   digitalWrite(SWITCH_GND, LOW);
+  digitalWrite(ASCOM, LOW);
   Serial.begin(9600);
   btSerial.begin(38400);
   Serial.setTimeout(100);
@@ -213,10 +214,8 @@ void focuser(byte action, long speed) {
   relays[R_DIR1] = action;
   relays[R_DIR2] = action ^ 1;
   pinMode(R_VOLTS + PIN, speed);                  // Select speed (SLOW = 5V, FAST = 12V)
-//pinMode(R_DIR1 + PIN, action ? OUTPUT : INPUT); // Set the relays to select polarity and therefore
-//pinMode(R_DIR2 + PIN, action ? INPUT : OUTPUT); // the direction of the motor
-  pinMode(R_DIR1 + PIN, action ? INPUT : OUTPUT); // Set the relays to select polarity and therefore
-  pinMode(R_DIR2 + PIN, action ? OUTPUT : INPUT); // the direction of the motor
+  pinMode(R_DIR1 + PIN, action ? OUTPUT : INPUT); // Set the relays to select polarity and therefore
+  pinMode(R_DIR2 + PIN, action ? INPUT : OUTPUT); // the direction of the motor
   isMoving = GO;                                  // Focuser is moving
 }
 
