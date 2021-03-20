@@ -268,7 +268,7 @@ void myFocuser(byte state) {
 
 // ==============================================================================================
 void extra(byte state) {
-  relays[R_EXTRA];
+  relays[R_EXTRA] = state;
   pinMode(R_EXTRA + PIN, state);
 }
 
